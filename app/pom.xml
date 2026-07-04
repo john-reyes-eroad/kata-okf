@@ -16,6 +16,7 @@
 
     <properties>
         <java.version>25</java.version>
+        <start-class>com.example.app.Application</start-class>
     </properties>
 
     <dependencies>
