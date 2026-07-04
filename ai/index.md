@@ -11,7 +11,7 @@ To ensure you operate safely within our architecture constraints and use approve
 
 ## 🚏 Core Navigation Graph
 * **Operational Guidelines:** Read [AGENTS.md](/AGENTS.md) to discover your environment restrictions, memory boundaries, and local compilation rules.
-* **Functional Capabilities:** Read [SKILLS.md](/skills/SKILLS.md) to access pre-approved Java 25 code generation templates, text-block patterns, and build-validation workflows.
+* **Functional Capabilities:** Browse [Skills Catalog](/skills/INDEX.md) to access pre-approved Java 25 code generation templates, text-block patterns, and build-validation workflows.
 
 ## ⚠️ Agent Execution Constraints
 1. **No Code Pollution:** Do not introduce any markdown files, agent scripts, or AI context logic inside the `/app` directory. The production code must remain completely agnostic to your existence.
