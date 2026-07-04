@@ -31,6 +31,10 @@ Follow ai/skills/add-spring-boot-endpoint.md.
 After changes, run compile from /app.
 ```
 
+![image-terminal.png](image-terminal.png)
+
+![image-browser.png](image-browser.png)
+
 ## Validation expectations
 
 For Java code changes, ask the AI to run checks from `app/` and report output.
