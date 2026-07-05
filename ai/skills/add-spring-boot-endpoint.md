@@ -6,7 +6,8 @@ version: 0.0.1
 title: Add a Spring Boot Endpoint
 description: Approved pattern for creating or modifying a lightweight REST endpoint in the app module.
 last_updated: 2026-07-05
-depends_on: []
+depends_on:
+  - kata-okf.bootstrap-spring-boot-application
 tags:
   - spring-boot
   - endpoint

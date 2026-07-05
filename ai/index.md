@@ -17,7 +17,11 @@ Use this file as the first stop when working in the repository. It defines the c
 
 ## Core Navigation Graph
 - **Operational policy:** [agents/java-spring-agent-contract.md](./agents/java-spring-agent-contract.md)
+- **Bootstrap Spring Boot skill:** [skills/bootstrap-spring-boot-application.md](./skills/bootstrap-spring-boot-application.md)
 - **Endpoint template skill:** [skills/add-spring-boot-endpoint.md](./skills/add-spring-boot-endpoint.md)
+- **WebSocket foundation skill:** [skills/bootstrap-websocket-foundation.md](./skills/bootstrap-websocket-foundation.md)
+- **WebSocket showcase demo (optional):** [skills/add-websocket-showcase-demo.md](./skills/add-websocket-showcase-demo.md)
+- **WebSocket broadcast skill:** [skills/add-websocket-broadcast.md](./skills/add-websocket-broadcast.md)
 
 ## Execution Constraints
 1. Keep AI documentation and prompts inside `/ai` only.

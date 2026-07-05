@@ -59,7 +59,11 @@ This repository uses an **OKF** (Open Knowledge Framework) layout to keep AI gui
 
 ## Navigation
 - [Workspace Index](../index.md)
+- [Bootstrap Spring Boot Skill](../skills/bootstrap-spring-boot-application.md)
 - [Endpoint Skill](../skills/add-spring-boot-endpoint.md)
+- [WebSocket Foundation Skill](../skills/bootstrap-websocket-foundation.md)
+- [WebSocket Showcase Demo Skill](../skills/add-websocket-showcase-demo.md)
+- [WebSocket Broadcast Skill](../skills/add-websocket-broadcast.md)
 
 
 
