@@ -1,169 +1,122 @@
-# Modern Java 25 Workspace and OKF Knowledge Layer
+# OKF Showcase: Java 25 + Spring Boot 4 REST + WebSocket
 
-This repository is a Maven multi-module workspace for a Spring Boot app, with a separate OKF knowledge layer under `ai/`.
+This repository showcases an **OKF (Open Knowledge Framework)** setup where an AI agent uses an agent contract plus skills to generate and evolve a Spring Boot application.
 
-## Quick Links
+Primary goal for new developers: clone this repo, use AI prompts that reference `ai/skills`, and generate implementations for:
+- REST endpoint(s)
+- WebSocket foundation and broadcast stream(s)
 
-- 📋 **[Validation Report](./VALIDATION_REPORT.md)** — Proof that both REST endpoints and WebSocket broadcasts work
-- 🔍 **[Codebase Review](./CODEBASE_REVIEW.md)** — Detailed architectural analysis
-- 📚 **[OKF Index](./ai/index.md)** — Skill documentation and guidance
+## What This Repo Demonstrates
 
-## Workspace Layout
+- `ai/agents/java-spring-agent-contract.md`: repository-level agent rules
+- `ai/skills/*.md`: reusable implementation skills
+- `app/`: generated/maintained production Spring Boot code
 
-```text
-kata-okf/
-├── README.md                  # Workspace overview + local run guide
-├── ai/                        # OKF knowledge layer
-│   ├── index.md               # Workspace entrypoint
-│   ├── agents/
-│   │   └── java-spring-agent-contract.md
-│   │                          # Repository-wide agent contract
-│   └── skills/
-│       ├── bootstrap-spring-boot-application.md
-│       ├── add-spring-boot-endpoint.md
-│       ├── bootstrap-websocket-foundation.md
-│       ├── add-websocket-broadcast.md
-│       └── add-websocket-showcase-demo.md
-│                              # Skill templates and generation guidance
-│
-├── pom.xml                    # Parent/aggregator Maven project
-└── app/                       # Core production application (agnostic to AI)
-    ├── pom.xml                # Spring Boot 4 and Java 25 module config
-    └── src/main/java/...      # Application, controllers, and other Java source
-```
+## New Developer Quickstart (AI First)
 
-## Run Locally
+1. Clone and open the repo.
+2. Ask the AI agent to follow the contract and skills under `ai/`.
+3. Run the prompt sequence below to generate/update implementations.
+4. Compile and test after each generated step.
 
-### Prerequisites
-
-- Java 25 (configured in `app/pom.xml`)
-- Maven 3.9+
-
-### Build and test
-
-Run from the repository root:
+## 1) Clone and Open
 
 ```bash
+git clone <your-repo-url>
+cd kata-okf
+```
+
+Before prompting the AI agent, open this folder in your IDE and ensure the agent can read files under `ai/` (especially `ai/index.md`, `ai/agents/java-spring-agent-contract.md`, and `ai/skills/*.md`).
+
+## 2) Prompt the AI to Use OKF Skills
+
+Use prompts that explicitly mention the skill file path.
+
+### Prompt A: Bootstrap Application
+
+```text
+Read and follow `ai/agents/java-spring-agent-contract.md`.
+Then apply skill `ai/skills/bootstrap-spring-boot-application.md`.
+Bootstrap/verify a Spring Boot 4 + Java 25 app in `/app`.
+Run compile validation from `/app`.
+```
+
+### Prompt B: Generate Hello REST Endpoint
+
+```text
+Apply skill `ai/skills/add-spring-boot-endpoint.md`.
+Create `GET /api/v1/hello` in `com.example.app.controller`.
+Return `ResponseEntity` with a small response record.
+Add/update tests and run `mvn clean compile` and `mvn test` from `/app`.
+```
+
+### Prompt C: Bootstrap WebSocket Foundation
+
+```text
+Apply skill `ai/skills/bootstrap-websocket-foundation.md`.
+Set up endpoint `/ws/kata-okf` and foundation classes.
+Enforce this rule: `WebSocketHandler` must depend only on `BroadcastRegistry` and must not import/inject concrete services from `com.example.app.websocket.service`.
+Run compile validation from `/app`.
+```
+
+### Prompt D: Add WebSocket Broadcast Stream
+
+```text
+Apply skill `ai/skills/add-websocket-broadcast.md`.
+Add one concrete broadcaster service extending `AbstractWebSocketMessageService`.
+Emit JSON with a unique `type` field.
+Add `websocket.<name>.fixed-rate-ms` in `app/src/main/resources/application.properties`.
+Run compile validation and tests from `/app`.
+```
+
+### Prompt E (Optional): Add Browser Demo Client
+
+```text
+Apply skill `ai/skills/add-websocket-showcase-demo.md`.
+Create/update `app/src/main/resources/static/websocket-showcase.html` to visualize websocket messages.
+```
+
+## Recommended Prompt Sequence
+
+```text
+1) bootstrap-spring-boot-application
+2) add-spring-boot-endpoint
+3) bootstrap-websocket-foundation
+4) add-websocket-broadcast
+5) add-websocket-showcase-demo (optional)
+```
+
+## 2.1) Validate After Each Prompt
+
+Run these from `app/` after each generated step:
+
+```bash
+cd app
 mvn clean compile
 mvn test
 ```
 
-### Start the app
+If a step is infrastructure-only and no tests were added yet, `mvn clean compile` is the minimum validation.
 
-Run from the repository root:
+## 3) Build, Run, and Test
 
-```bash
-mvn -pl app spring-boot:run
-```
+### Prerequisites
 
-Or package and run the JAR:
+- Java 25
+- Maven 3.9+
 
-```bash
-mvn clean package
-java -jar app/target/kata-okf-0.0.1-SNAPSHOT.jar
-```
-
-## Configuration
-
-Current app config in `app/src/main/resources/application.properties` includes:
-
-- `spring.threads.virtual.enabled=true`
-
-## Typical Workflow
-
-1. Add Java source under `app/src/main/java/...`
-2. Add tests under `app/src/test/java/...`
-3. Use Maven from the repository root to compile, test, and package
-4. Keep OKF docs in `ai/` for guidance and templates, separate from production code
-
-## OKF Conventions
-
-- `ai/index.md` is the root entrypoint for the knowledge layer.
-- `ai/agents/java-spring-agent-contract.md` defines repository-wide operating rules.
-- Each concrete skill is stored as a descriptive markdown file under `ai/skills/`.
-- Spring Boot bootstrap skill: `ai/skills/bootstrap-spring-boot-application.md`
-- Endpoint generation skill: `ai/skills/add-spring-boot-endpoint.md`
-- WebSocket foundation skill: `ai/skills/bootstrap-websocket-foundation.md`
-- WebSocket broadcast skill: `ai/skills/add-websocket-broadcast.md`
-- WebSocket showcase demo skill: `ai/skills/add-websocket-showcase-demo.md`
-- New developer AI endpoint guide: `AI_ENDPOINT_GUIDE.md`
-
-## AI Prompting Guide (Using Skills)
-
-Use these prompts when working with an AI coding agent so it explicitly follows the OKF skills in `ai/skills`.
-
-### 1) Bootstrap a new Spring Boot app (required first step)
-
-Prompt example:
-
-```text
-Use the OKF skill `ai/skills/bootstrap-spring-boot-application.md`.
-Bootstrap a Spring Boot 4 + Java 25 app in `/app` with:
-- `Application.java`
-- `spring-boot-starter-web` dependency
-- basic `application.properties`
-Then run compile validation from `/app`.
-```
-
-### 2) Generate a Hello World REST controller
-
-Prompt example:
-
-```text
-Use the OKF skill `ai/skills/add-spring-boot-endpoint.md`.
-Create a controller in `com.example.app.controller` with route `GET /api/v1/hello`.
-Return a small JSON payload using a Java record and `ResponseEntity`.
-Add or update tests for the endpoint and run compile/test validation from `/app`.
-```
-
-### 3) Bootstrap WebSocket foundation
-
-Prompt example:
-
-```text
-Use the OKF skill `ai/skills/bootstrap-websocket-foundation.md`.
-Create the websocket foundation classes and register endpoint `/ws/kata-okf`.
-Important: `WebSocketHandler` must only depend on `BroadcastRegistry` and must not import or inject any class from `com.example.app.websocket.service`.
-Run compile validation from `/app`.
-```
-
-### 4) Add a concrete WebSocket broadcast stream
-
-Prompt example:
-
-```text
-Use the OKF skill `ai/skills/add-websocket-broadcast.md`.
-Add one broadcaster service under `com.example.app.websocket.service` that extends `AbstractWebSocketMessageService`.
-Include a JSON payload with a `type` field and configure `websocket.<name>.fixed-rate-ms` in `application.properties`.
-Do not change `WebSocketHandler` dependencies.
-Run compile validation from `/app`.
-```
-
-### 5) Optional demo browser client
-
-Prompt example:
-
-```text
-Use the OKF skill `ai/skills/add-websocket-showcase-demo.md`.
-Add a simple browser demo at `/app/src/main/resources/static/websocket-showcase.html` for websocket testing.
-```
-
-### Recommended prompt flow (copy/paste sequence)
-
-```text
-1) Apply `bootstrap-spring-boot-application`.
-2) Apply `add-spring-boot-endpoint` for `GET /api/v1/hello`.
-3) Apply `bootstrap-websocket-foundation`.
-4) Apply `add-websocket-broadcast` for one stream.
-5) (Optional) Apply `add-websocket-showcase-demo`.
-After each step, compile from `/app`.
-```
-
-## Testing REST and WebSocket
-
-### Start the app
+### Compile and test
 
 ```bash
+cd app
+mvn clean compile
+mvn test
+```
+
+### Start application
+
+```bash
+cd ..
 mvn -pl app spring-boot:run
 ```
 
@@ -173,13 +126,15 @@ mvn -pl app spring-boot:run
 curl -s http://localhost:8080/api/v1/hello
 ```
 
-Expected shape (example):
+Expected example response:
 
 ```json
 {"module":"hello","message":"Hello from hello","status":"ACTIVE"}
 ```
 
-### Test WebSocket broadcast with browser
+### Test WebSocket broadcast (browser)
+
+Use this only if you ran Prompt E (`add-websocket-showcase-demo`) or already have `app/src/main/resources/static/websocket-showcase.html` in your project.
 
 Open:
 
@@ -187,70 +142,27 @@ Open:
 http://localhost:8080/websocket-showcase.html
 ```
 
-### Test WebSocket broadcast with `wscat`
+### Test WebSocket broadcast (`wscat`)
+
+This works even without the optional browser demo client.
 
 ```bash
 npm install -g wscat
 wscat -c ws://localhost:8080/ws/kata-okf
 ```
 
-Expected shape (example):
+Expected example message:
 
 ```json
 {"type":"name","name":"Ava"}
 ```
 
-## Current App Surface
+## Skill and Contract Index
 
-- Spring Boot application module: `app/`
-- Sample endpoint: `GET /api/v1/hello`
-- WebSocket endpoint: `ws://localhost:8080/ws/kata-okf`
-
-## Testing the WebSocket
-
-### Browser-Based Testing (Recommended)
-
-Once the app is running, open your browser to the showcase client:
-
-```
-http://localhost:8080/websocket-showcase.html
-```
-
-This interactive page connects to the WebSocket endpoint and displays incoming messages in real time (e.g., random names broadcasted every ~1 second).
-
-### Command-Line Testing with wscat
-
-If you have `wscat` installed globally:
-
-```bash
-npm install -g wscat
-wscat -c ws://localhost:8080/ws/kata-okf
-```
-
-Expected message format:
-```json
-{"type":"name","name":"Alice"}
-{"type":"name","name":"Bob"}
-```
-
-### Direct Testing with curl (read-only)
-
-For one-directional inspection:
-
-```bash
-curl -i -N -H "Connection: Upgrade" -H "Upgrade: websocket" \
-  -H "Sec-WebSocket-Version: 13" \
-  -H "Sec-WebSocket-Key: $(openssl rand -base64 16)" \
-  http://localhost:8080/ws/kata-okf
-```
-
-### Browser DevTools Console
-
-In any browser, connect via the JavaScript console:
-
-```javascript
-const socket = new WebSocket("ws://localhost:8080/ws/kata-okf");
-socket.onmessage = (event) => console.log(JSON.parse(event.data));
-socket.onopen = () => console.log("Connected!");
-socket.onclose = () => console.log("Closed!");
-```
+- `ai/index.md`
+- `ai/agents/java-spring-agent-contract.md`
+- `ai/skills/bootstrap-spring-boot-application.md`
+- `ai/skills/add-spring-boot-endpoint.md`
+- `ai/skills/bootstrap-websocket-foundation.md`
+- `ai/skills/add-websocket-broadcast.md`
+- `ai/skills/add-websocket-showcase-demo.md`
