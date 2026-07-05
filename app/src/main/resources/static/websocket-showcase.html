@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Timestamp WebSocket Demo</title>
+</head>
+<body>
+<h1>Server timestamp stream</h1>
+<p>Latest timestamp: <span id="timestamp">connecting...</span></p>
+<p>Random letter: <span id="letter">-</span></p>
+
+<script>
+    const protocol = window.location.protocol === "https:" ? "wss" : "ws";
+    const socket = new WebSocket(`${protocol}://${window.location.host}/ws/kata-okf`);
+    const timestampEl = document.getElementById("timestamp");
+    const letterEl = document.getElementById("letter");
+
+    socket.onmessage = (event) => {
+        const payload = JSON.parse(event.data);
+        if (payload.type === "timestamp") {
+            timestampEl.textContent = payload.timestamp;
+        }
+        if (payload.type === "letter") {
+            letterEl.textContent = payload.letter;
+        }
+    };
+
+    socket.onclose = () => {
+        timestampEl.textContent = "connection closed";
+        letterEl.textContent = "-";
+    };
+</script>
+</body>
+</html>
+
+
