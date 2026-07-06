@@ -132,6 +132,12 @@ Expected example response:
 {"module":"hello","message":"Hello from hello","status":"ACTIVE"}
 ```
 
+## Expected Runtime Outcome
+
+Use this screenshot as the visual target for the running demo (REST or WebSocket flow):
+
+![Expected runtime outcome](./expected-outcome.png)
+
 ### Test WebSocket broadcast (browser)
 
 Use this only if you ran Prompt E (`add-websocket-showcase-demo`) or already have `app/src/main/resources/static/websocket-showcase.html` in your project.
